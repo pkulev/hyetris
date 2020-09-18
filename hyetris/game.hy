@@ -10,8 +10,11 @@
 (defclass Hyetris [Application]
   "Hyetris game application class."
 
-  (defn __init__ [self x y]
-    (.__init__ (super) x y :title "Hyetris")))
+  (setv max-x 40
+        max-y 40)
+
+  (defn __init__ [self]
+    (.__init__ (super) self.max-x self.max-y :title "Hyetris")))
 
 
 (defclass Block [Renderable]
@@ -25,8 +28,9 @@
     (setv self._timer
           (Timer 1 (fn []
                      (+= self.pos.y 1)
-                     (when (<= self.pos.y 0)
-                       (setv self._moving False)))))
+                     (when (>= self.pos.y (- (. (.current Application) max-y) 3))
+                       (setv self._moving False
+                             self.pos.y (- (. (.current Application) max-y) 3))))))
 
     (.start self._timer))
 
@@ -45,7 +49,7 @@
 
 
 (defmain [&rest args]
-  (let [app (Hyetris 40 40)]
+  (let [app (Hyetris)]
     (.register app GameState)
     (try
       (.start app)
