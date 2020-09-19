@@ -25,7 +25,6 @@
 
   (defn __init__ [self pos]
     (setv self.pos pos)
-    (setv self.image (Surface self.image))
     (setv self._moving True)
     (setv self._timer
           (Timer 1 (fn []
@@ -43,39 +42,31 @@
         (.restart self._timer)))))
 
 
-(defclass IShape [Shape]
-  (setv image '("XXXX")))
+(defmacro defshape [name image]
+  `(defclass ~name [Shape]
+     (setv image (Surface ~image))))
 
+(defshape IShape '("XXXX"))
 
-(defclass OShape [Shape]
-  (setv image '("XX"
-                "XX")))
+(defshape OShape'("XX"
+                  "XX"))
 
+(defshape TShape '("XXX"
+                   " X "))
 
-(defclass TShape [Shape]
-  (setv image '("XXX"
-                " X ")))
+(defshape JShape '(" X"
+                   " X"
+                   "XX"))
 
+(defshape LShape '("X "
+                   "X "
+                   "XX"))
 
-(defclass JShape [Shape]
-  (setv image '(" X"
-                " X"
-                "XX")))
+(defshape SShape '(" XX"
+                   "XX "))
 
-
-(defclass LShape [Shape]
-  (setv image '("X "
-                "X "
-                "XX")))
-
-(defclass SShape [Shape]
-  (setv image '(" XX"
-                "XX ")))
-
-
-(defclass ZShape [Shape]
-  (setv image '("XX "
-                " XX")))
+(defshape ZShape '("XX "
+                   " XX"))
 
 
 (defclass GameState [State]
